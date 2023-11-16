@@ -3,8 +3,11 @@ RUN dotnet tool install --tool-path /tools dotnet-trace
 RUN dotnet tool install --tool-path /tools dotnet-dump
 RUN dotnet tool install --tool-path /tools dotnet-counters
 
+
 FROM mcr.microsoft.com/dotnet/runtime:7.0 AS runtime
 COPY --from=tools /tools /tools
+RUN addgroup toolsuser --gid 1337 && adduser toolsuser --gid 1337 --uid 1337
 
 ENV PATH="/tools:${PATH}"
 WORKDIR /tools
+USER toolsuser
